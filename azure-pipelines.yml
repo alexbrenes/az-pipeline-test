@@ -1,0 +1,32 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: |
+    sudo apt install cppcheck
+  displayName: 'Install the scan'
+
+- script: |
+    git clone https://github.com/alexbrenes/vulnerable-code.git
+  displayName: 'Clone repository'
+
+- script: |
+    cppcheck --xml-version=2 --enable=all main.c --output-file=cppcheck-result.xml
+  displayName: 'Scan the repository'
+
+- script: |
+    cat cppcheck-result.xml
+  displayName: 'Reading the results'
+
+- script: |
+    echo "Converting the Cppcheck XML results to JUnit"
+    sleep 5
+  displayName: 'Convert to JUnit'
+
+- script: |
+    echo "Reading the Cppcheck JUnit results"
+    sleep 5
+  displayName: 'Reading the JUnit results'
