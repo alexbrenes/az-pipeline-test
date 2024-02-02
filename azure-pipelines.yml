@@ -10,19 +10,19 @@ steps:
   displayName: 'Install script dependencies and Cppcheck'
 
 - script: |
-    git clone https://github.com/alexbrenes/vulnerable-code.git /vulnerable-code
+    sudo git clone https://github.com/alexbrenes/vulnerable-code.git /vulnerable-code
   displayName: 'Clone repository'
 
 - script: |
-    mkdir /results
-    cppcheck --xml-version=2 --enable=all . --output-file=/results/cppcheck-result.xml
+    sudo mkdir /results
+    sudo cppcheck --xml-version=2 --enable=all . --output-file=/results/cppcheck-result.xml
   workingDirectory: /vulnerable-code
   displayName: 'Scan the repository'
 
 - script: |
-    php -r 'print(json_encode(simplexml_load_string(file_get_contents("/results/cppcheck-result.xml"), "SimpleXMLElement", LIBXML_NOCDATA)));' > /results/cppcheck-result.json
-    tr -d '@' < /results/cppcheck-result.json > /tmp/cppcheck-result.json
-    echo <<EOF > /tmp/nunit-template.hbs
+    sudo php -r 'print(json_encode(simplexml_load_string(file_get_contents("/results/cppcheck-result.xml"), "SimpleXMLElement", LIBXML_NOCDATA)));' > /results/cppcheck-result.json
+    sudo tr -d '@' < /results/cppcheck-result.json > /tmp/cppcheck-result.json
+    sudo echo <<EOF > /tmp/nunit-template.hbs
     <test-run
       id="2"
       name="Cppcheck test"
@@ -42,7 +42,7 @@ steps:
               {{/each}}
     </test-run>
     EOF
-    handlebars /tmp/cppcheck-report.json < /tmp/nunit-template.hbs > /results/nunit-cppcheck-report.x
+    sudo handlebars /tmp/cppcheck-report.json < /tmp/nunit-template.hbs > /results/nunit-cppcheck-report.x
   displayName: 'Convert to NUnit'
 
 - script: |
