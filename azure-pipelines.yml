@@ -52,5 +52,5 @@ steps:
 
 - task: PublishTestResults@2
   inputs:
-    testResultsFormat: 'JUnit'
+    testResultsFormat: 'NUnit'
     testResultsFiles: '$HOME/results/nunit-cppcheck-result.xml'
