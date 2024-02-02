@@ -16,7 +16,7 @@ steps:
 - script: |
     mkdir $HOME/results
     cppcheck --xml-version=2 --enable=all . --output-file=$HOME/results/cppcheck-result.xml
-  workingDirectory: $HOME/vulnerable-code
+  workingDirectory: $(HOME)/vulnerable-code
   displayName: 'Scan the repository'
 
 - script: |
