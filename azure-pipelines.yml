@@ -43,9 +43,9 @@ steps:
               {{/each}}
     </test-run>
     EOF
-    handlebars /tmp/cppcheck-report.json < /tmp/nunit-template.hbs > $HOME/results/nunit-cppcheck-report.x
+    handlebars /tmp/cppcheck-result.json < /tmp/nunit-template.hbs > $HOME/results/nunit-cppcheck-result.xml
   displayName: 'Convert to NUnit'
 
 - script: |
-    cat $HOME/results/nunit-cppcheck-report.xml
+    cat $HOME/results/nunit-cppcheck-result.xml
   displayName: 'Reading the NUnit results'
