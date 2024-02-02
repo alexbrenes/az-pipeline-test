@@ -6,23 +6,23 @@ pool:
 
 steps:
 - script: |
-    sudo apt -y install cppcheck npm php php-xml && npm install -g handlebars
+    apt -y install cppcheck npm php php-xml && npm install -g handlebars
   displayName: 'Install script dependencies and Cppcheck'
 
 - script: |
-    sudo git clone https://github.com/alexbrenes/vulnerable-code.git /vulnerable-code
+    git clone https://github.com/alexbrenes/vulnerable-code.git $HOME/vulnerable-code
   displayName: 'Clone repository'
 
 - script: |
-    sudo mkdir /results
-    sudo cppcheck --xml-version=2 --enable=all . --output-file=/results/cppcheck-result.xml
-  workingDirectory: /vulnerable-code
+    mkdir $HOME/results
+    cppcheck --xml-version=2 --enable=all . --output-file=$HOME/results/cppcheck-result.xml
+  workingDirectory: $HOME/vulnerable-code
   displayName: 'Scan the repository'
 
 - script: |
-    sudo php -r 'print(json_encode(simplexml_load_string(file_get_contents("/results/cppcheck-result.xml"), "SimpleXMLElement", LIBXML_NOCDATA)));' > /results/cppcheck-result.json
-    sudo tr -d '@' < /results/cppcheck-result.json > /tmp/cppcheck-result.json
-    sudo echo <<EOF > /tmp/nunit-template.hbs
+    php -r 'print(json_encode(simplexml_load_string(file_get_contents("$HOME/results/cppcheck-result.xml"), "SimpleXMLElement", LIBXML_NOCDATA)));' > $HOME/results/cppcheck-result.json
+    tr -d '@' < $HOME/results/cppcheck-result.json > /tmp/cppcheck-result.json
+    echo <<EOF > /tmp/nunit-template.hbs
     <test-run
       id="2"
       name="Cppcheck test"
@@ -42,9 +42,9 @@ steps:
               {{/each}}
     </test-run>
     EOF
-    sudo handlebars /tmp/cppcheck-report.json < /tmp/nunit-template.hbs > /results/nunit-cppcheck-report.x
+    handlebars /tmp/cppcheck-report.json < /tmp/nunit-template.hbs > $HOME/results/nunit-cppcheck-report.x
   displayName: 'Convert to NUnit'
 
 - script: |
-    cat /results/nunit-cppcheck-report.xml
+    cat $HOME/results/nunit-cppcheck-report.xml
   displayName: 'Reading the NUnit results'
