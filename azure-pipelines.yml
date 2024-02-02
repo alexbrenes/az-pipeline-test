@@ -6,27 +6,45 @@ pool:
 
 steps:
 - script: |
-    sudo apt install cppcheck
-  displayName: 'Install the scan'
+    apt -y install cppcheck npm php php-xml && npm install -g handlebars
+  displayName: 'Install script dependencies and Cppcheck'
 
 - script: |
-    git clone https://github.com/alexbrenes/vulnerable-code.git
+    git clone https://github.com/alexbrenes/vulnerable-code.git /vulnerable-code
   displayName: 'Clone repository'
 
 - script: |
-    cppcheck --xml-version=2 --enable=all main.c --output-file=cppcheck-result.xml
+    mkdir /results
+    cppcheck --xml-version=2 --enable=all . --output-file=/results/cppcheck-result.xml
+  workingDirectory: /vulnerable-code
   displayName: 'Scan the repository'
 
 - script: |
-    cat cppcheck-result.xml
-  displayName: 'Reading the results'
+    php -r 'print(json_encode(simplexml_load_string(file_get_contents("/results/cppcheck-result.xml"), "SimpleXMLElement", LIBXML_NOCDATA)));' > /results/cppcheck-result.json
+    tr -d '@' < /results/cppcheck-result.json > /tmp/cppcheck-result.json
+    echo <<EOF > /tmp/nunit-template.hbs
+    <test-run
+      id="2"
+      name="Cppcheck test"
+      start-time="SCAN DATETIME">
+              {{#each errors.error}}
+              <test-case
+                      id="{{attributes.id}}"
+                      severity="{{attributes.severity}}"
+                      msg="{{attributes.msg}}"
+                      verbose="{{attributes.verbose}}"
+                      cwe="{{attributes.cwe}}"
+                      file0="{{attributes.file0}}"
+                      result="Failed"
+                      time="1">
+                      <location file="{{location.attributes.file}}" line="{{location.attributes.line}}" column="{{location.attributes.column}}"/>
+              </test-case>
+              {{/each}}
+    </test-run>
+    EOF
+    handlebars /tmp/cppcheck-report.json < /tmp/nunit-template.hbs > /results/nunit-cppcheck-report.x
+  displayName: 'Convert to NUnit'
 
 - script: |
-    echo "Converting the Cppcheck XML results to JUnit"
-    sleep 5
-  displayName: 'Convert to JUnit'
-
-- script: |
-    echo "Reading the Cppcheck JUnit results"
-    sleep 5
-  displayName: 'Reading the JUnit results'
+    cat /results/nunit-cppcheck-report.xml
+  displayName: 'Reading the NUnit results'
