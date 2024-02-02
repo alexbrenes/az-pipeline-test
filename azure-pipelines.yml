@@ -49,3 +49,8 @@ steps:
 - script: |
     cat $HOME/results/nunit-cppcheck-result.xml
   displayName: 'Reading the NUnit results'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '$HOME/results/nunit-cppcheck-result.xml'
