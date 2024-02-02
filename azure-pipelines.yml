@@ -20,7 +20,8 @@ steps:
   displayName: 'Scan the repository'
 
 - script: |
-    php -r 'print(json_encode(simplexml_load_string(file_get_contents("$($HOME)/results/cppcheck-result.xml"), "SimpleXMLElement", LIBXML_NOCDATA)));' > $HOME/results/cppcheck-result.json
+    export FILE=$HOME/results/cppcheck-result.xml
+    php -r 'print(json_encode(simplexml_load_string(file_get_contents(getenv("FILE")), "SimpleXMLElement", LIBXML_NOCDATA)));' > $HOME/results/cppcheck-result.json
     tr -d '@' < $HOME/results/cppcheck-result.json > /tmp/cppcheck-result.json
     echo <<EOF > /tmp/nunit-template.hbs
     <test-run
