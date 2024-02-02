@@ -6,7 +6,7 @@ pool:
 
 steps:
 - script: |
-    apt -y install cppcheck npm php php-xml && npm install -g handlebars
+    sudo apt -y install cppcheck npm php php-xml && npm install -g handlebars
   displayName: 'Install script dependencies and Cppcheck'
 
 - script: |
