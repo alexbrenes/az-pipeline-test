@@ -47,7 +47,9 @@ steps:
   displayName: 'Convert to NUnit'
 
 - script: |
+    echo ########
     cat $HOME/results/nunit-cppcheck-result.xml
+    echo ########
   displayName: 'Reading the NUnit results'
 
 - task: PublishTestResults@2
