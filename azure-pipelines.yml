@@ -15,7 +15,7 @@ steps:
 
 - script: |
     mkdir $HOME/results
-    cppcheck --xml-version=2 --enable=all --suppress=missingIncludeSystem . --output-file=$HOME/results/cppcheck-result.xml
+    cppcheck --xml-version=2 --enable=all --suppress=missingIncludeSystem .
   workingDirectory: $(HOME)/vulnerable-code
   displayName: 'Scan the repository'
 
@@ -33,7 +33,7 @@ steps:
     <test-run>
     EOF
     mkdir /tmp/results
-    handlebars /tmp/cppcheck-result.json < /tmp/nunit-template.hbs
+    handlebars /tmp/cppcheck-result.json < /tmp/nunit-template.hbs > /tmp/results/nunit-cppcheck-result.xml
   displayName: 'Convert to NUnit'
 
 - script: 'cat /tmp/results/nunit-cppcheck-result.xml'
