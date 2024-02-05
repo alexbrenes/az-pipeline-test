@@ -39,6 +39,7 @@ steps:
 
 - script: |
     echo ########
+    ll /tmp/results/
     [ -s /tmp/results/nunit-cppcheck-result.xml ] || (echo "file is empty" && exit 1)
     cat /tmp/results/nunit-cppcheck-result.xml
     echo ########
