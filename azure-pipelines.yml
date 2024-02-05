@@ -24,9 +24,9 @@ steps:
     php -r 'print(json_encode(simplexml_load_string(file_get_contents(getenv("FILE")), "SimpleXMLElement", LIBXML_NOCDATA)));' > $HOME/results/cppcheck-result.json
     tr -d '@' < $HOME/results/cppcheck-result.json > /tmp/cppcheck-result.json
     cat <<EOF > /tmp/junit-template.hbs
-    <?xml version="1.0" encoding="UTF-8"?>
+    <?xml version='1.0' encoding='UTF-8'?>
     <testsuites name="Cppcheck">
-        <testsuite name="Cppcheck" timestamp="TIMESTAMP" hostname="HOSTNAME" tests="2" errors="{{errors.error.length}}" failures="0" skipped="0" time="2.0">
+        <testsuite name="Cppcheck" timestamp="2024-02-05T15:06:51.422707" hostname="HOSTNAME" tests="2" errors="{{errors.error.length}}" failures="0" skipped="0" time="2.0">
             <testcase name="{{location.attributes.file}}" classname="Cppcheck error" time="1.0">
               {{#each errors.error}}
               <error message="{{attributes.msg}}" type="error:{{attributes.id}}">{{location.attributes.file}}:{{location.attributes.line}}:{{location.attributes.column}}: {{attributes.verbose}}</error>
