@@ -25,18 +25,19 @@ steps:
     tr -d '@' < $HOME/results/cppcheck-result.json > /tmp/cppcheck-result.json
     cat <<EOF > /tmp/junit-template.hbs
     <?xml version="1.0" encoding="UTF-8"?>
-    <test-run name="Cppcheck">
-        <test-suite name="Cppcheck" timestamp="TIMESTAMP" hostname="HOSTNAME" tests="2" errors="{{errors.error.length}}" failures="0" skipped="0" time="2.0">
-            <test-case name="{{location.attributes.file}}" classname="Cppcheck error" time="1.0">
+    <testsuitesn name="Cppcheck">
+        <testsuite name="Cppcheck" timestamp="TIMESTAMP" hostname="HOSTNAME" tests="2" errors="{{errors.error.length}}" failures="0" skipped="0" time="2.0">
+            <testcase name="{{location.attributes.file}}" classname="Cppcheck error" time="1.0">
               {{#each errors.error}}
               <error message="{{attributes.msg}}" type="error:{{attributes.id}}">{{location.attributes.file}}:{{location.attributes.line}}:{{location.attributes.column}}: {{attributes.verbose}}</error>
               {{/each}}
-            </test-case>
-        </test-suite>
-    </test-run>
+            </testcase>
+        </testsuite>
+    </testsuites>
     EOF
     mkdir /tmp/results
     handlebars /tmp/cppcheck-result.json < /tmp/junit-template.hbs > /tmp/results/junit-cppcheck-result.xml
+    cat /tmp/results/junit-cppcheck-result.xml
   displayName: 'Convert to JUnit'
 
 - task: PublishTestResults@2
