@@ -24,7 +24,7 @@ steps:
     php -r 'print(json_encode(simplexml_load_string(file_get_contents(getenv("FILE")), "SimpleXMLElement", LIBXML_NOCDATA)));' > $HOME/results/cppcheck-result.json
     tr -d '@' < $HOME/results/cppcheck-result.json > /tmp/cppcheck-result.json
     ls -la $HOME/results/
-    echo <<EOF > /tmp/nunit-template.hbs
+    cat <<EOF > /tmp/nunit-template.hbs
     <test-run name="Cppcheck">
         <test-suite name="Cppcheck" timestamp="TIMESTAMP" hostname="HOSTNAME" tests="2" errors="{{errors.error.length}}" failures="0" skipped="0" time="2.0">
             <test-case name="{{location.attributes.file}}" classname="Cppcheck error" time="1.0">
