@@ -26,7 +26,7 @@ steps:
     cat <<EOF > /tmp/junit-template.hbs
     <?xml version='1.0' encoding='UTF-8'?>
     <testsuites name="Cppcheck">
-        <testsuite name="Cppcheck" timestamp="2024-02-05T15:06:51.422707" hostname="HOSTNAME" tests="2" errors="{{errors.error.length}}" failures="0" skipped="0" time="2.0">
+        <testsuite name="Cppcheck" timestamp="$(stat --format=%z $HOME/results/cppcheck-result.xml)" errors="{{errors.error.length}}" failures="0" skipped="0" time="2.0">
             <testcase name="{{location.attributes.file}}" classname="Cppcheck error" time="1.0">
               {{#each errors.error}}
               <error message="{{attributes.msg}}" type="error:{{attributes.id}}">{{location.attributes.file}}:{{location.attributes.line}}:{{location.attributes.column}}: {{attributes.verbose}}</error>
