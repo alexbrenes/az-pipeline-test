@@ -37,12 +37,7 @@ steps:
     handlebars /tmp/cppcheck-result.json < /tmp/nunit-template.hbs > /tmp/results/nunit-cppcheck-result.xml
   displayName: 'Convert to NUnit'
 
-- script: |
-    echo ########
-    ls -la /tmp/results/
-    [ -s /tmp/results/nunit-cppcheck-result.xml ] || (echo "file is empty" && exit 1)
-    cat /tmp/results/nunit-cppcheck-result.xml
-    echo ########
+- script: 'cat /tmp/results/nunit-cppcheck-result.xml'
   displayName: 'Reading the NUnit results'
 
 - task: PublishTestResults@2
