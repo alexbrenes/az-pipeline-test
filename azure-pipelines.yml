@@ -35,10 +35,9 @@ steps:
     <test-run>
     EOF
     mkdir /tmp/results
-    handlebars /tmp/cppcheck-result.json < /tmp/nunit-template.hbs > /tmp/results/nunit-cppcheck-result.xml
   displayName: 'Convert to NUnit'
 
-- script: 'cat /tmp/results/nunit-cppcheck-result.xml'
+- script: 'handlebars /tmp/cppcheck-result.json < /tmp/nunit-template.hbs > /tmp/results/nunit-cppcheck-result.xml'
   displayName: 'Reading the NUnit results'
 
 - task: PublishTestResults@2
