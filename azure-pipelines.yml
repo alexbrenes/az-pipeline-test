@@ -15,13 +15,13 @@ steps:
 
 - script: |
     mkdir $HOME/results
-    cppcheck --xml-version=2 --enable=all --suppress=missingIncludeSystem .
+    cppcheck --xml-version=2 --enable=all --suppress=missingIncludeSystem . --output-file=$HOME/results/cppcheck-result.xml
   workingDirectory: $(HOME)/vulnerable-code
   displayName: 'Scan the repository'
 
 - script: |
     export FILE=$HOME/results/cppcheck-result.xml
-    php -r 'print(json_encode(simplexml_load_string(file_get_contents(getenv("FILE")), "SimpleXMLElement", LIBXML_NOCDATA)));' > $HOME/results/cppcheck-result.json
+    php -r 'print(json_encode(simplexml_load_string(file_get_contents(getenv("FILE")), "SimpleXMLElement", LIBXML_NOCDATA)));'
     tr -d '@' < $HOME/results/cppcheck-result.json > /tmp/cppcheck-result.json
     echo <<EOF > /tmp/nunit-template.hbs
     <test-run name="Cppcheck">
