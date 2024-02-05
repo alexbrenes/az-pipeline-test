@@ -6,7 +6,7 @@ pool:
 
 steps:
 - script: |
-    sudo apt -y install cppcheck npm php php-xml && npm install -g handlebars-cmd
+    sudo apt -y install cppcheck npm php php-xml
   displayName: 'Install script dependencies and Cppcheck'
 
 - script: |
@@ -35,6 +35,7 @@ steps:
     <test-run>
     EOF
     mkdir /tmp/results
+    npm install -g handlebars-cmd
     handlebars /tmp/cppcheck-result.json < /tmp/nunit-template.hbs > /tmp/results/nunit-cppcheck-result.xml
   displayName: 'Convert to NUnit'
 
