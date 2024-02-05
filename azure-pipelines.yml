@@ -22,7 +22,7 @@ steps:
 - script: |
     export FILE=$HOME/results/cppcheck-result.xml
     php -r 'print(json_encode(simplexml_load_string(file_get_contents(getenv("FILE")), "SimpleXMLElement", LIBXML_NOCDATA)));' > $HOME/results/cppcheck-result.json
-    tr -d '@' < $HOME/results/cppcheck-result.json
+    tr -d '@' < $HOME/results/cppcheck-result.json > /tmp/cppcheck-result.json
     echo <<EOF > /tmp/nunit-template.hbs
     <test-run name="Cppcheck">
         <test-suite name="Cppcheck" timestamp="TIMESTAMP" hostname="HOSTNAME" tests="2" errors="{{errors.error.length}}" failures="0" skipped="0" time="2.0">
@@ -33,7 +33,7 @@ steps:
     <test-run>
     EOF
     mkdir /tmp/results
-    handlebars /tmp/cppcheck-result.json < /tmp/nunit-template.hbs > /tmp/results/nunit-cppcheck-result.xml
+    handlebars /tmp/cppcheck-result.json < /tmp/nunit-template.hbs
   displayName: 'Convert to NUnit'
 
 - script: 'cat /tmp/results/nunit-cppcheck-result.xml'
