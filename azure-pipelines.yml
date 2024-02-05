@@ -25,7 +25,7 @@ steps:
     tr -d '@' < $HOME/results/cppcheck-result.json > /tmp/cppcheck-result.json
     cat <<EOF > /tmp/junit-template.hbs
     <?xml version="1.0" encoding="UTF-8"?>
-    <testsuitesn name="Cppcheck">
+    <testsuites name="Cppcheck">
         <testsuite name="Cppcheck" timestamp="TIMESTAMP" hostname="HOSTNAME" tests="2" errors="{{errors.error.length}}" failures="0" skipped="0" time="2.0">
             <testcase name="{{location.attributes.file}}" classname="Cppcheck error" time="1.0">
               {{#each errors.error}}
