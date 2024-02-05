@@ -6,7 +6,7 @@ pool:
 
 steps:
 - script: |
-    sudo apt -y install cppcheck npm php php-xml && npm install -g handlebars
+    sudo apt -y install cppcheck npm php php-xml && npm install -g handlebars-cmd
   displayName: 'Install script dependencies and Cppcheck'
 
 - script: |
@@ -15,7 +15,7 @@ steps:
 
 - script: |
     mkdir $HOME/results
-    cppcheck --xml-version=2 --enable=all . --output-file=$HOME/results/cppcheck-result.xml
+    cppcheck --xml-version=2 --enable=all --suppress=missingIncludeSystem . --output-file=$HOME/results/cppcheck-result.xml
   workingDirectory: $(HOME)/vulnerable-code
   displayName: 'Scan the repository'
 
@@ -24,24 +24,14 @@ steps:
     php -r 'print(json_encode(simplexml_load_string(file_get_contents(getenv("FILE")), "SimpleXMLElement", LIBXML_NOCDATA)));' > $HOME/results/cppcheck-result.json
     tr -d '@' < $HOME/results/cppcheck-result.json > /tmp/cppcheck-result.json
     echo <<EOF > /tmp/nunit-template.hbs
-    <test-run
-      id="2"
-      name="Cppcheck test"
-      start-time="SCAN DATETIME">
-              {{#each errors.error}}
-              <test-case
-                      id="{{attributes.id}}"
-                      severity="{{attributes.severity}}"
-                      msg="{{attributes.msg}}"
-                      verbose="{{attributes.verbose}}"
-                      cwe="{{attributes.cwe}}"
-                      file0="{{attributes.file0}}"
-                      result="Failed"
-                      time="1">
-                      <location file="{{location.attributes.file}}" line="{{location.attributes.line}}" column="{{location.attributes.column}}"/>
-              </test-case>
-              {{/each}}
-    </test-run>
+    <?xml version='1.0' encoding='utf-8'?>
+    <testsuites name="Cppcheck">
+        <testsuite name="Cppcheck" timestamp="TIMESTAMP" hostname="HOSTNAME" tests="2" errors="{{errors.error.length}}" failures="0" skipped="0" time="2.0">
+            <testcase name="{{location.attributes.file}}" classname="Cppcheck error" time="1.0">
+              {{#each errors.error}}<error message="{{attributes.msg}}" type="error:{{attributes.id}}">{{location.attributes.file}}:{{location.attributes.line}}:{{location.attributes.column}}: {{attributes.verbose}}</error>{{/each}}
+            </testcase>
+        </testsuite>
+    </testsuites>
     EOF
     handlebars /tmp/cppcheck-result.json < /tmp/nunit-template.hbs > $HOME/results/nunit-cppcheck-result.xml
   displayName: 'Convert to NUnit'
