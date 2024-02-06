@@ -39,13 +39,10 @@ steps:
     cat <<EOF > /tmp/example.xml
     <?xml version="1.0" encoding="UTF-8"?>
     <testsuites time="15.682687">
-        <testsuite name="MY TESTS" time="1.000">
-            <testcase name="testCase1" classname="Tests.Authentication" time="1.000">
+        <testsuite name="Cppcheck" time="1.000">
+            <testcase name="UnreadVariable" classname="Cppcheck error" time="1.000">
                 <failure message="Variable &#x27;a[10]&#x27; is assigned a value that is never used." type="error:unreadVariable">
-                    <!-- Call stack printed here -->
-                </failure>
-                <failure message="" type="" time="1.000">
-                bad-f/bad2.cpp:4:11: Variable &#x27;a[10]&#x27; is assigned a value that is never used.
+                    bad-f/bad2.cpp:4:6: Array &#x27;a[10]&#x27; accessed at index 10, which is out of bounds.
                 </failure>
             </testcase>
         </testsuite>
