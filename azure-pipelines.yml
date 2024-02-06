@@ -41,10 +41,10 @@ steps:
     <testsuites time="15.682687">
         <testsuite name="MY TESTS" time="1.000">
             <testcase name="testCase1" classname="Tests.Authentication" time="1.000">
-                <failure message="Assertion error message" type="AssertionError">
+                <failure message="Variable &#x27;a[10]&#x27; is assigned a value that is never used." type="AssertionError">
                     <!-- Call stack printed here -->
                 </failure>
-                <failure message="Variable &#x27;a[10]&#x27; is assigned a value that is never used." type="error:unreadVariable" time="1.000">
+                <failure message="" type="error:unreadVariable" time="1.000">
                 bad-f/bad2.cpp:4:11: Variable &#x27;a[10]&#x27; is assigned a value that is never used.
                 </failure>
             </testcase>
