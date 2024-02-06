@@ -24,41 +24,20 @@ steps:
     php -r 'print(json_encode(simplexml_load_string(file_get_contents(getenv("FILE")), "SimpleXMLElement", LIBXML_NOCDATA)));' > $HOME/results/cppcheck-result.json
     tr -d '@' < $HOME/results/cppcheck-result.json > /tmp/cppcheck-result.json
     cat <<EOF > /tmp/junit-template.hbs
-    <?xml version='1.0' encoding='UTF-8'?>
-    <testsuites name="Cppcheck">
-        <testsuite name="Cppcheck" timestamp="$(stat --format=%z $HOME/results/cppcheck-result.xml)" errors="{{errors.error.length}}" failures="0" skipped="0" time="2.0">
+    <?xml version="1.0" encoding="UTF-8"?>
+    <testsuites>
+        <testsuite name="Cppcheck">
             <testcase name="{{location.attributes.file}}" classname="Cppcheck error" time="1.0">
-              {{#each errors.error}}
-              <error message="{{attributes.msg}}" type="error:{{attributes.id}}">{{location.attributes.file}}:{{location.attributes.line}}:{{location.attributes.column}}: {{attributes.verbose}}</error>
-              {{/each}}
+                {{#each errors.error}}
+                <failure message="{{attributes.msg}}" type="error:{{attributes.id}}">{{location.attributes.file}}:{{location.attributes.line}}:{{location.attributes.column}}: {{attributes.verbose}}</failure>
+                {{/each}}
             </testcase>
         </testsuite>
     </testsuites>
     EOF
     ######
     cat <<EOF > /tmp/example.xml
-    <?xml version="1.0" encoding="UTF-8"?>
-    <testsuites time="15.682687">
-        <testsuite name="Tests.Registration" time="6.605871">
-            <testcase name="testCase1" classname="Tests.Registration" time="2.113871" />
-            <testcase name="testCase2" classname="Tests.Registration" time="1.051" />
-            <testcase name="testCase3" classname="Tests.Registration" time="3.441" />
-        </testsuite>
-        <testsuite name="Tests.Authentication" time="9.076816">
-            <testsuite name="Tests.Authentication.Login" time="4.356">
-                <testcase name="testCase4" classname="Tests.Authentication.Login" time="2.244" />
-                <testcase name="testCase5" classname="Tests.Authentication.Login" time="0.781" />
-                <testcase name="testCase6" classname="Tests.Authentication.Login" time="1.331" />
-            </testsuite>
-            <testcase name="testCase7" classname="Tests.Authentication" time="2.508" />
-            <testcase name="testCase8" classname="Tests.Authentication" time="1.230816" />
-            <testcase name="testCase9" classname="Tests.Authentication" time="0.982">
-                <failure message="Assertion error message" type="AssertionError">
-                    <!-- Call stack printed here -->
-                </failure>            
-            </testcase>
-        </testsuite>
-    </testsuites>
+    
     EOF
     ######
     mkdir /tmp/results
@@ -70,4 +49,4 @@ steps:
   displayName: 'Publish Test Results'
   inputs:
     testResultsFormat: 'JUnit'
-    testResultsFiles: '/tmp/example.xml'
+    testResultsFiles: '/tmp/results/junit-cppcheck-result.xml'
