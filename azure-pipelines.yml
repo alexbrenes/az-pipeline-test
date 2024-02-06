@@ -28,31 +28,15 @@ steps:
     <testsuites>
         <testsuite name="Cppcheck">
           {{#each errors.error}}
-          <testcase name="{{location.attributes.file}}" classname="Cppcheck error" time="1.0">
+          <testcase name="{{location.attributes.file}}:attributes.id" classname="Cppcheck error" time="1.0">
               <failure message="{{attributes.msg}}" type="error:{{attributes.id}}">{{location.attributes.file}}:{{location.attributes.line}}:{{location.attributes.column}}: {{attributes.verbose}}</failure>
           </testcase>
           {{/each}}
         </testsuite>
     </testsuites>
     EOF
-    ######
-    cat <<EOF > /tmp/example.xml
-    <?xml version="1.0" encoding="UTF-8"?>
-    <testsuites time="15.682687">
-        <testsuite name="Cppcheck" time="2.000">
-            <testcase name="UnreadVariable" classname="Cppcheck error" time="1.000">
-                <failure message="Variable &#x27;a[10]&#x27; is assigned a value that is never used." type="error:unreadVariable">bad-f/bad.cpp:4:11: Variable &#x27;a[10]&#x27; is assigned a value that is never used.</failure>
-            </testcase>
-            <testcase name="UnreadVariable2" classname="Cppcheck error" time="1.000">
-                <failure message="Variable &#x27;a[10]&#x27; is assigned a value that is never used." type="error:unreadVariable">bad-f/bad.cpp:4:11: Variable &#x27;a[10]&#x27; is assigned a value that is never used.</failure>
-            </testcase>
-        </testsuite>
-    </testsuites>
-    EOF
-    ######
     mkdir /tmp/results
     handlebars /tmp/cppcheck-result.json < /tmp/junit-template.hbs > /tmp/results/junit-cppcheck-result.xml
-    cat /tmp/results/junit-cppcheck-result.xml
   displayName: 'Convert to JUnit'
 
 - task: PublishTestResults@2
