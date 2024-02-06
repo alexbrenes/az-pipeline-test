@@ -33,6 +33,9 @@ steps:
           </testcase>
           {{/each}}
         </testsuite>
+        <testsuite name="Test Placeholder">
+          <testcase name="testPlaceholder" classname="placeholder" time="1.0" />
+        </testsuite>
     </testsuites>
     EOF
     mkdir /tmp/results
