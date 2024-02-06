@@ -41,9 +41,7 @@ steps:
     <testsuites time="15.682687">
         <testsuite name="Cppcheck" time="1.000">
             <testcase name="UnreadVariable" classname="Cppcheck error" time="1.000">
-                <failure message="Variable &#x27;a[10]&#x27; is assigned a value that is never used." type="error:unreadVariable">
-                    bad-f/bad2.cpp:4:6: Array &#x27;a[10]&#x27; accessed at index 10, which is out of bounds.
-                </failure>
+                <failure message="Variable &#x27;a[10]&#x27; is assigned a value that is never used." type="error:unreadVariable">bad-f/bad.cpp:4:11: Variable &#x27;a[10]&#x27; is assigned a value that is never used.</failure>
             </testcase>
         </testsuite>
     </testsuites>
