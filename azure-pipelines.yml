@@ -27,11 +27,11 @@ steps:
     <?xml version="1.0" encoding="UTF-8"?>
     <testsuites>
         <testsuite name="Cppcheck">
-            <testcase name="{{location.attributes.file}}" classname="Cppcheck error" time="1.0">
-                {{#each errors.error}}
-                <failure message="{{attributes.msg}}" type="error:{{attributes.id}}">{{location.attributes.file}}:{{location.attributes.line}}:{{location.attributes.column}}: {{attributes.verbose}}</failure>
-                {{/each}}
-            </testcase>
+          {{#each errors.error}}
+          <testcase name="{{location.attributes.file}}" classname="Cppcheck error" time="1.0">
+              <failure message="{{attributes.msg}}" type="error:{{attributes.id}}">{{location.attributes.file}}:{{location.attributes.line}}:{{location.attributes.column}}: {{attributes.verbose}}</failure>
+          </testcase>
+          {{/each}}
         </testsuite>
     </testsuites>
     EOF
@@ -59,4 +59,4 @@ steps:
   displayName: 'Publish Test Results'
   inputs:
     testResultsFormat: 'JUnit'
-    testResultsFiles: '/tmp/example.xml'
+    testResultsFiles: '/tmp/results/junit-cppcheck-result.xml'
