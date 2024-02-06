@@ -44,6 +44,9 @@ steps:
                 <failure message="Assertion error message" type="AssertionError">
                     <!-- Call stack printed here -->
                 </failure>
+                <failure message="Variable &#x27;a[10]&#x27; is assigned a value that is never used." type="error:unreadVariable">
+                bad-f/bad2.cpp:4:11: Variable &#x27;a[10]&#x27; is assigned a value that is never used.
+                </failure>
             </testcase>
         </testsuite>
     </testsuites>
