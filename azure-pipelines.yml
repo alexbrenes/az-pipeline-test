@@ -28,7 +28,7 @@ steps:
     <testsuites>
         <testsuite name="Cppcheck">
           {{#each errors.error}}
-          <testcase name="{{location.attributes.file}}:attributes.id" classname="Cppcheck error" time="1.0">
+          <testcase name="{{location.attributes.file}}:{{attributes.id}}" classname="Cppcheck error" time="1.0">
               <failure message="{{attributes.msg}}" type="error:{{attributes.id}}">{{location.attributes.file}}:{{location.attributes.line}}:{{location.attributes.column}}: {{attributes.verbose}}</failure>
           </testcase>
           {{/each}}
