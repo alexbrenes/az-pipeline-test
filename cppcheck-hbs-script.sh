@@ -9,7 +9,7 @@
 #
 #       The route to the repo and results must be replaced by a variable or parameter.
 #
-apt -y install npm php php-xml && npm install -g handlebars
+apt -y install npm php php-xml && npm install -g handlebars-cmd
 cd /sast/c-cpp-code #$WORKDIR
 cppcheck --xml-version=2 --enable=all . --output-file=results/cppcheck-result.xml
 php -r 'print(json_encode(simplexml_load_string(file_get_contents("results/cppcheck-result.xml"), "SimpleXMLElement", LIBXML_NOCDATA)));' > results/cppcheck-result.json
